@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aldrey Dela Pena Canlas — Resume</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #0077b6;
+      --primary-lt:#0096c7;
+      --text:      #1a1a2e;
+      --muted:     #4a5568;
+      --border:    #cbd5e0;
+      --bg-accent: #f0f7ff;
+      --font:      'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    }
+
+    html { font-size: 10pt; }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: #fff;
+      line-height: 1.5;
+    }
+
+    /* ── Page wrapper ─────────────────────────────────────────────────────── */
+    .page {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 2.4rem 2.8rem;
+    }
+
+    /* ── Print button (hidden in print) ──────────────────────────────────── */
+    .print-btn {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+    }
+
+    .print-btn button {
+      padding: 0.5rem 1.4rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+
+    .print-btn button:hover { background: var(--primary-lt); }
+
+    @media print {
+      .print-btn { display: none; }
+      .page { padding: 0; max-width: 100%; }
+      html { font-size: 9.5pt; }
+      body { background: #fff; }
+      a { color: inherit; text-decoration: none; }
+    }
+
+    /* ── Header ──────────────────────────────────────────────────────────── */
+    .resume-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--primary);
+      margin-bottom: 1.4rem;
+    }
+
+    .resume-name {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .resume-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 0.25rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .resume-contact {
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .resume-contact a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* ── Section ─────────────────────────────────────────────────────────── */
+    .section {
+      margin-bottom: 1.4rem;
+    }
+
+    .section-heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── Summary ─────────────────────────────────────────────────────────── */
+    .summary p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Experience ──────────────────────────────────────────────────────── */
+    .exp-entry {
+      margin-bottom: 1rem;
+    }
+
+    .exp-entry:last-child { margin-bottom: 0; }
+
+    .exp-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      align-items: baseline;
+      margin-bottom: 0.15rem;
+    }
+
+    .exp-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .exp-date {
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .exp-company {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    .exp-bullets li {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+      padding-left: 1rem;
+      position: relative;
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-bullets li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 0.7rem;
+      top: 0.15rem;
+    }
+
+    /* ── Projects ────────────────────────────────────────────────────────── */
+    .project-entry {
+      margin-bottom: 0.85rem;
+    }
+
+    .project-entry:last-child { margin-bottom: 0; }
+
+    .project-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .project-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .project-stack {
+      font-size: 0.75rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .project-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-top: 0.15rem;
+    }
+
+    /* ── Skills ──────────────────────────────────────────────────────────── */
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .skills-table tr {
+      vertical-align: top;
+    }
+
+    .skills-table td {
+      padding: 0.2rem 0.5rem 0.2rem 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .skills-table td:first-child {
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      width: 11rem;
+      padding-right: 0.75rem;
+    }
+
+    .skills-table td:last-child {
+      color: var(--muted);
+    }
+
+    /* ── Certifications ──────────────────────────────────────────────────── */
+    .cert-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 2rem;
+    }
+
+    .cert-item {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .cert-item::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 0.75rem;
+      top: 0.1rem;
+    }
+
+    /* ── Achievements ────────────────────────────────────────────────────── */
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .achievement-item {
+      background: var(--bg-accent);
+      border: 1px solid #bee3f8;
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .achievement-metric {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: block;
+      line-height: 1.2;
+    }
+
+    .achievement-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    /* ── Education ───────────────────────────────────────────────────────── */
+    .edu-entry {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .edu-degree {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .edu-school {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .edu-year {
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── Page break hints ────────────────────────────────────────────────── */
+    @media print {
+      .no-break { page-break-inside: avoid; }
+      .section  { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Print button -->
+    <div class="print-btn">
+      <button onclick="window.print()">⬇ Save as PDF</button>
+    </div>
+
+    <!-- ── Header ──────────────────────────────────────────────────────── -->
+    <header class="resume-header">
+      <div>
+        <div class="resume-name">Aldrey Dela Pena Canlas</div>
+        <div class="resume-title">Senior Medical AI Engineer</div>
+      </div>
+      <div class="resume-contact">
+        <a href="mailto:aldrey.bim@gmail.com">aldrey.bim@gmail.com</a><br />
+        <a href="tel:+639750280986">+63 9750280986</a><br />
+        Mexico, Pampanga, Philippines<br />
+        <a href="https://github.com/aldrey-canlas" target="_blank">github.com/aldrey-canlas</a>
+      </div>
+    </header>
+
+    <!-- ── Summary ─────────────────────────────────────────────────────── -->
+    <section class="section summary no-break">
+      <div class="section-heading">Professional Summary</div>
+      <p>Senior Medical AI Engineer with 6+ years of experience applying Machine Learning and Deep Learning to healthcare challenges. Specializes in clinical NLP, medical imaging analysis, and predictive patient outcome modeling — building AI systems that help clinicians make faster, more accurate decisions. Proven track record delivering production-grade clinical AI across radiology, pathology, and clinical decision support, with deep expertise in HIPAA-compliant data pipelines, FHIR integration, and regulatory-aware model deployment.</p>
+    </section>
+
+    <!-- ── Experience ───────────────────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-heading">Experience</div>
+
+      <div class="exp-entry no-break">
+        <div class="exp-header">
+          <span class="exp-title">Medical AI Engineer</span>
+          <span class="exp-date">March 2025 – Present</span>
+        </div>
+        <div class="exp-company">Boulder Labs — US Remote</div>
+        <ul class="exp-bullets">
+          <li>Leading development of AI-powered clinical decision support tools for US healthcare providers.</li>
+          <li>Building LLM-based pipelines for automated clinical documentation, ICD-10 coding, and prior authorization using ClinicalBERT and GPT-4.</li>
+          <li>Integrating models with FHIR-compliant EHR systems and ensuring HIPAA-compliant data handling throughout the full ML lifecycle.</li>
+        </ul>
+      </div>
+
+      <div class="exp-entry no-break">
+        <div class="exp-header">
+          <span class="exp-title">AI Engineer — Healthcare Division</span>
+          <span class="exp-date">January 2022 – March 2025</span>
+        </div>
+        <div class="exp-company">TechnoYuga — Philippines</div>
+        <ul class="exp-bullets">
+          <li>Designed and deployed medical imaging models for radiology and pathology clients, including a chest X-ray abnormality detector (AUC 0.94 on CheXpert) and a histopathology slide classifier (92% accuracy).</li>
+          <li>Built clinical NLP pipelines for PHI de-identification (98.7% F1 on i2b2) and named entity recognition over clinical notes.</li>
+          <li>Reduced radiologist review time by 35% on pilot deployments through AI-assisted screening integration.</li>
+        </ul>
+      </div>
+
+      <div class="exp-entry no-break">
+        <div class="exp-header">
+          <span class="exp-title">Junior AI Engineer</span>
+          <span class="exp-date">June 2019 – December 2021</span>
+        </div>
+        <div class="exp-company">Flatworld Solutions — Philippines</div>
+        <ul class="exp-bullets">
+          <li>Developed predictive models for patient readmission risk and length-of-stay estimation using structured EHR data.</li>
+          <li>Built data preprocessing pipelines for HL7 and DICOM datasets.</li>
+          <li>Contributed to a sepsis early-warning system achieving 88% sensitivity at a 6-hour prediction horizon in retrospective validation.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── Projects ─────────────────────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-heading">Key Projects</div>
+
+      <div class="project-entry no-break">
+        <div class="project-header">
+          <span class="project-name">Chest X-Ray Abnormality Detection</span>
+          <span class="project-stack">PyTorch · Vision Transformer · DICOM</span>
+        </div>
+        <p class="project-desc">ViT-L/16 model trained on 100k+ chest X-rays detecting 14 thoracic conditions. AUC 0.94 on CheXpert. DICOM-integrated with Grad-CAM heatmaps; reduced radiologist review time by 35%.</p>
+      </div>
+
+      <div class="project-entry no-break">
+        <div class="project-header">
+          <span class="project-name">Clinical Note De-identification Pipeline</span>
+          <span class="project-stack">ClinicalBERT · spaCy · FastAPI</span>
+        </div>
+        <p class="project-desc">HIPAA-compliant NLP pipeline removing 18 PHI categories from clinical notes. 98.7% F1 on i2b2 2014 benchmark. Processes 10,000+ notes/hour; deployed as FHIR R4 microservice.</p>
+      </div>
+
+      <div class="project-entry no-break">
+        <div class="project-header">
+          <span class="project-name">Sepsis Early-Warning System</span>
+          <span class="project-stack">LSTM · MIMIC-III · FastAPI</span>
+        </div>
+        <p class="project-desc">Bidirectional LSTM over ICU time-series data. 88% sensitivity / 82% specificity at 6-hour horizon. Validated on 40k+ MIMIC-III admissions; real-time hospital alerting dashboard.</p>
+      </div>
+
+      <div class="project-entry no-break">
+        <div class="project-header">
+          <span class="project-name">Automated ICD-10 Coding with LLMs</span>
+          <span class="project-stack">GPT-4 · LangChain · RAG · FHIR</span>
+        </div>
+        <p class="project-desc">RAG-grounded GPT-4 pipeline for ICD-10-CM/PCS code suggestion from discharge summaries. Reduced manual coding time by 50%, improved accuracy by 18% in US hospital pilot.</p>
+      </div>
+
+      <div class="project-entry no-break">
+        <div class="project-header">
+          <span class="project-name">Patient Readmission Risk Predictor</span>
+          <span class="project-stack">XGBoost · SHAP · EHR</span>
+        </div>
+        <p class="project-desc">XGBoost model (AUC 0.81) predicting 30-day readmission from structured EHR features. SHAP explainability surfaces top risk factors per patient; integrated into EHR discharge workflow.</p>
+      </div>
+    </section>
+
+    <!-- ── Skills ───────────────────────────────────────────────────────── -->
+    <section class="section no-break">
+      <div class="section-heading">Technical Skills</div>
+      <table class="skills-table">
+        <tbody>
+          <tr>
+            <td>Medical AI / NLP</td>
+            <td>Clinical NLP, ICD Coding, NER, De-identification, FHIR, HL7, cTAKES, MedSpaCy, ClinicalBERT, BioBERT</td>
+          </tr>
+          <tr>
+            <td>Medical Imaging</td>
+            <td>DICOM, Radiology AI, Pathology AI, Image Segmentation, U-Net, Vision Transformer, OpenCV, SimpleITK</td>
+          </tr>
+          <tr>
+            <td>Deep Learning</td>
+            <td>PyTorch, TensorFlow, Keras, CNN, Transformer, LSTM, Vision Transformer, MIL</td>
+          </tr>
+          <tr>
+            <td>NLP &amp; LLMs</td>
+            <td>Hugging Face, BERT, GPT-4, LangChain, RAG, spaCy, Sentence Transformers</td>
+          </tr>
+          <tr>
+            <td>Machine Learning</td>
+            <td>Scikit-learn, XGBoost, LightGBM, Survival Analysis, Risk Stratification, Federated Learning, SHAP</td>
+          </tr>
+          <tr>
+            <td>Engineering</td>
+            <td>Python, SQL, FastAPI, Docker, Apache Airflow, PostgreSQL, Pandas, NumPy</td>
+          </tr>
+          <tr>
+            <td>Cloud / MLOps</td>
+            <td>AWS HealthLake, Google Cloud Healthcare API, Azure Health Data Services, MLflow, Weights &amp; Biases</td>
+          </tr>
+          <tr>
+            <td>Compliance</td>
+            <td>HIPAA, FDA AI/ML Guidance, GDPR, IRB Protocols, Model Explainability, Bias Auditing</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Achievements ──────────────────────────────────────────────────── -->
+    <section class="section no-break">
+      <div class="section-heading">Key Achievements</div>
+      <div class="achievements-grid">
+        <div class="achievement-item">
+          <span class="achievement-metric">AUC 0.94</span>
+          <span class="achievement-label">CheXpert chest X-ray benchmark</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-metric">98.7% F1</span>
+          <span class="achievement-label">i2b2 clinical de-identification</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-metric">−35%</span>
+          <span class="achievement-label">Radiologist review time</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-metric">−50%</span>
+          <span class="achievement-label">ICD-10 manual coding time</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-metric">88%</span>
+          <span class="achievement-label">Sepsis sensitivity at 6 hrs</span>
+        </div>
+        <div class="achievement-item">
+          <span class="achievement-metric">10+</span>
+          <span class="achievement-label">Clinical AI models in production</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Certifications ────────────────────────────────────────────────── -->
+    <section class="section no-break">
+      <div class="section-heading">Certifications</div>
+      <div class="cert-cols">
+        <div class="cert-item">AWS Certified Machine Learning – Specialty</div>
+        <div class="cert-item">NVIDIA DLI — Medical Imaging</div>
+        <div class="cert-item">Google Professional Machine Learning Engineer</div>
+        <div class="cert-item">HL7 FHIR Fundamentals Certificate</div>
+        <div class="cert-item">Hugging Face NLP Course (Medical NLP Track)</div>
+      </div>
+    </section>
+
+    <!-- ── Education ─────────────────────────────────────────────────────── -->
+    <section class="section no-break">
+      <div class="section-heading">Education</div>
+      <div class="edu-entry">
+        <div>
+          <div class="edu-degree">Bachelor of Science in Computer Science</div>
+          <div class="edu-school">University of the Philippines Diliman</div>
+        </div>
+        <div class="edu-year">Graduated 2017</div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
