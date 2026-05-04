@@ -1,0 +1,12 @@
+{
+  "name": "portfolio-website",
+  "version": "1.0.0",
+  "description": "Portfolio website for Aldrey Dela Pena Canlas",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/validation.test.js"
+  },
+  "devDependencies": {
+    "fast-check": "^3.23.2"
+  }
+}
