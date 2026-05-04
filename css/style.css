@@ -1335,6 +1335,10 @@ main {
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
   transition:
     transform var(--transition-base),
     box-shadow var(--transition-base),
@@ -1350,12 +1354,37 @@ main {
   border-color: var(--color-border-accent);
 }
 
+.project-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+/* Tech stack tags */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.project-tag {
+  display: inline-block;
+  padding: 0.2rem var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  background-color: rgba(0, 200, 255, 0.08);
+  border: 0.0625rem solid rgba(0, 200, 255, 0.2);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
 /* Project title */
 .project-card h3 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-heading);
-  margin-bottom: var(--space-3);
   line-height: var(--line-height-snug);
 }
 
@@ -1364,6 +1393,217 @@ main {
   font-size: var(--font-size-base);
   color: var(--color-text-muted);
   line-height: var(--line-height-relaxed);
+  flex: 1;
+}
+
+/* Card footer — Details button + links */
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 0.0625rem solid var(--color-border);
+}
+
+.btn-project-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  background-color: transparent;
+  border: 0.0625rem solid var(--color-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.btn-project-detail:hover,
+.btn-project-detail:focus-visible {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.project-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.project-link:hover,
+.project-link:focus-visible {
+  color: var(--color-primary-light);
+  text-decoration: none;
+}
+
+/* ── Project Detail Modal ─────────────────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background-color: rgba(10, 14, 23, 0.85);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.modal-overlay:not([hidden]) {
+  opacity: 1;
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-container {
+  position: relative;
+  background-color: var(--color-card);
+  border: 0.0625rem solid var(--color-border-accent);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  max-width: 42rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg), 0 0 2rem rgba(0, 200, 255, 0.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+  color: var(--color-text-heading);
+  background-color: var(--color-card-hover);
+}
+
+/* Modal content layout */
+.modal-content .modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.modal-content h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading);
+  margin-bottom: var(--space-4);
+  line-height: var(--line-height-snug);
+}
+
+.modal-content .modal-description {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-6);
+}
+
+.modal-content .modal-highlights {
+  margin-bottom: var(--space-6);
+}
+
+.modal-content .modal-highlights h3 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin-bottom: var(--space-3);
+}
+
+.modal-content .modal-highlights ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.modal-content .modal-highlights li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  line-height: var(--line-height-relaxed);
+}
+
+.modal-content .modal-highlights li::before {
+  content: '›';
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: 0.0625rem solid var(--color-border);
+}
+
+.modal-actions .btn {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-sm);
+}
+
+/* Mobile modal */
+@media (max-width: 48em) {
+  .modal-container {
+    padding: var(--space-6);
+    max-height: 95vh;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* 8.2 Tablet: 2 columns (769px – 1024px) */
@@ -1876,3 +2116,834 @@ body {
    No <img> elements are used in this portfolio. This comment documents
    compliance with Requirement 10.3: if images are added in the future,
    all <img> elements must include descriptive alt attributes. */
+
+/* ==========================================================================
+   Skills Section — Canvas Background (skills-animation feature)
+   ========================================================================== */
+
+/* Skills section canvas background */
+#skills {
+  position: relative;
+  overflow: hidden;
+}
+
+#skills-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#skills > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   Medical AI Visual Enhancements
+   ========================================================================== */
+
+/* ── Hero Badge ──────────────────────────────────────────────────────────── */
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-light);
+  background-color: rgba(0, 200, 255, 0.08);
+  border: 0.0625rem solid var(--color-border-accent);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-6);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  animation: badge-fade-in 0.8s ease 0.4s both;
+}
+
+.hero-badge-dot {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes badge-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+/* ── Hero Stats ──────────────────────────────────────────────────────────── */
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+  padding: var(--space-6);
+  background-color: rgba(20, 28, 46, 0.6);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  animation: stats-fade-in 0.8s ease 0.8s both;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.hero-stat-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-stat-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  text-align: center;
+}
+
+.hero-stat-divider {
+  width: 0.0625rem;
+  height: 2.5rem;
+  background-color: var(--color-border);
+}
+
+@keyframes stats-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 48em) {
+  .hero-stats {
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .hero-stat-divider {
+    width: 100%;
+    height: 0.0625rem;
+  }
+
+  .hero-stat-value {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ── Hero Pulse Rings (medical heartbeat visual) ──────────────────────────── */
+
+.hero-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20rem;
+  height: 20rem;
+  border: 0.125rem solid rgba(0, 200, 255, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.hero-pulse-ring--1 {
+  animation: pulse-ring 4s ease-out infinite;
+}
+
+.hero-pulse-ring--2 {
+  animation: pulse-ring 4s ease-out 1.3s infinite;
+}
+
+.hero-pulse-ring--3 {
+  animation: pulse-ring 4s ease-out 2.6s infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* ── Section Title Enhancement ──────────────────────────────────────────────── */
+
+.section-title {
+  animation: title-slide-in 0.6s ease both;
+}
+
+@keyframes title-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Scroll Reveal Animations ──────────────────────────────────────────────── */
+
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+}
+
+[data-reveal="up"] {
+  transform: translateY(2rem);
+}
+
+[data-reveal="up"].revealed {
+  transform: translateY(0);
+}
+
+[data-reveal="left"] {
+  transform: translateX(-2rem);
+}
+
+[data-reveal="left"].revealed {
+  transform: translateX(0);
+}
+
+[data-reveal="right"] {
+  transform: translateX(2rem);
+}
+
+[data-reveal="right"].revealed {
+  transform: translateX(0);
+}
+
+/* Stagger delays */
+[data-reveal-delay="80"] {
+  transition-delay: 80ms;
+}
+
+[data-reveal-delay="100"] {
+  transition-delay: 100ms;
+}
+
+[data-reveal-delay="160"] {
+  transition-delay: 160ms;
+}
+
+[data-reveal-delay="200"] {
+  transition-delay: 200ms;
+}
+
+/* ── Enhanced Section Backgrounds ──────────────────────────────────────────── */
+
+/* Medical-themed gradient overlays */
+#about {
+  position: relative;
+}
+
+#about::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at top right,
+    rgba(0, 200, 255, 0.03) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+#skills {
+  position: relative;
+}
+
+#skills::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at top left,
+    rgba(0, 200, 255, 0.03) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* ── Enhanced Skill Category Cards ──────────────────────────────────────────── */
+
+.skill-category {
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.25rem;
+  height: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    var(--color-primary-light)
+  );
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: height var(--transition-base);
+}
+
+.skill-category:hover::before {
+  height: 100%;
+}
+
+/* ── Enhanced Timeline ──────────────────────────────────────────────────────── */
+
+.timeline-marker {
+  transition: all var(--transition-base);
+}
+
+.timeline-entry:hover .timeline-marker {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 0.25rem rgba(0, 200, 255, 0.3);
+}
+
+.timeline-content {
+  position: relative;
+}
+
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: 0;
+  bottom: 0;
+  width: 0.1875rem;
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.timeline-entry:hover .timeline-content::before {
+  opacity: 1;
+}
+
+/* ── Enhanced Project Cards ──────────────────────────────────────────────────── */
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 200, 255, 0.08) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  pointer-events: none;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Reduced Motion Overrides ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-pulse-ring {
+    display: none;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Extended Medical AI Visual Enhancements — Phase 2
+   ========================================================================== */
+
+/* ── Font override — Inter for sharper professional look ─────────────────── */
+
+:root {
+  --font-family-base: 'Inter', 'Segoe UI', system-ui, -apple-system,
+                      BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  /* Richer medical-grade color tokens */
+  --color-primary:        #00d4ff;
+  --color-primary-dark:   #0099cc;
+  --color-primary-light:  #7ae8ff;
+  --color-border-accent:  rgba(0, 212, 255, 0.25);
+  --shadow-glow:          0 0 1.5rem rgba(0, 212, 255, 0.25);
+  --color-bg:             #080c14;
+  --color-bg-alt:         #0c1220;
+  --color-card:           #111827;
+  --color-card-hover:     #162033;
+}
+
+/* ── Nav logo with medical cross icon ────────────────────────────────────── */
+
+.nav-logo a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-radius: var(--radius-md);
+  color: var(--color-bg);
+  flex-shrink: 0;
+  box-shadow: 0 0 0.75rem rgba(0, 212, 255, 0.3);
+}
+
+.nav-logo-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading);
+  letter-spacing: -0.01em;
+}
+
+.nav-logo-accent {
+  color: var(--color-primary);
+}
+
+/* ── Hero title gradient ─────────────────────────────────────────────────── */
+
+.hero-title-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 50%,
+    var(--color-primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s linear infinite;
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Hero h1 entrance animation ──────────────────────────────────────────── */
+
+.hero-content h1 {
+  animation: hero-h1-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-content h2 {
+  animation: hero-h2-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.hero-tagline {
+  animation: hero-h2-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+}
+
+.hero-cta {
+  animation: hero-h2-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+@keyframes hero-h1-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-h2-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── ECG / Heartbeat line ────────────────────────────────────────────────── */
+
+.hero-ecg {
+  width: 100%;
+  max-width: 38rem;
+  margin: var(--space-8) auto 0;
+  height: 3rem;
+  opacity: 0.35;
+  animation: ecg-fade-in 1s ease 1.2s both;
+}
+
+.hero-ecg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ecg-line {
+  stroke: var(--color-primary);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: ecg-draw 2.5s ease 1.4s forwards, ecg-pulse 3s ease 4s infinite;
+}
+
+@keyframes ecg-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 0.35; }
+}
+
+@keyframes ecg-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes ecg-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.6; }
+}
+
+/* ── Section title — gradient underline ─────────────────────────────────── */
+
+.section-title::after {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
+  width: 4rem;
+  height: 0.25rem;
+}
+
+/* ── Enhanced skill category — icon accent ───────────────────────────────── */
+
+.skill-category h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.skill-category h3::before {
+  content: '';
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  box-shadow: 0 0 0.5rem rgba(0, 212, 255, 0.5);
+}
+
+/* ── Timeline — glowing active dot ──────────────────────────────────────── */
+
+.timeline::before {
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    rgba(0, 212, 255, 0.1)
+  );
+}
+
+.timeline-marker {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  box-shadow:
+    0 0 0 0.125rem var(--color-primary),
+    0 0 0.75rem rgba(0, 212, 255, 0.4);
+}
+
+.timeline-content h3 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-heading);
+  margin-bottom: var(--space-1);
+}
+
+.timeline-content .company {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.timeline-content .date-range {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  background-color: rgba(0, 212, 255, 0.06);
+  border: 0.0625rem solid var(--color-border-accent);
+  border-radius: var(--radius-full);
+  padding: 0.15rem var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+/* ── Enhanced certifications ─────────────────────────────────────────────── */
+
+.cert-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-card);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.cert-list li:hover {
+  border-color: var(--color-border-accent);
+  background-color: var(--color-card-hover);
+  transform: translateX(0.25rem);
+}
+
+.cert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(0, 212, 255, 0.08);
+  border: 0.0625rem solid var(--color-border-accent);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* Achievement list with metric callouts */
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.achievement-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-card);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.achievement-list li:hover {
+  border-color: var(--color-border-accent);
+  background-color: var(--color-card-hover);
+  transform: translateX(0.25rem);
+}
+
+.achievement-metric {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  white-space: nowrap;
+  min-width: 5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.achievement-list li span:last-child {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  line-height: var(--line-height-snug);
+}
+
+/* ── Enhanced footer ─────────────────────────────────────────────────────── */
+
+footer {
+  background-color: var(--color-bg);
+  border-top: 0.0625rem solid var(--color-border);
+  padding-block: var(--space-10);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-heading);
+}
+
+.footer-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-radius: var(--radius-sm);
+  color: var(--color-bg);
+}
+
+.footer-tagline {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.footer-copy {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* ── Glowing primary buttons ─────────────────────────────────────────────── */
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
+  border-color: transparent;
+  box-shadow: 0 0 1rem rgba(0, 212, 255, 0.2);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-light) 0%,
+    var(--color-primary) 100%
+  );
+  box-shadow: 0 0 1.5rem rgba(0, 212, 255, 0.4);
+}
+
+/* ── Contact section — enhanced form inputs ──────────────────────────────── */
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.1875rem rgba(0, 212, 255, 0.15);
+  outline: none;
+}
+
+/* ── Reduced motion overrides for phase 2 ───────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-gradient {
+    animation: none;
+    background: var(--color-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-content h1,
+  .hero-content h2,
+  .hero-tagline,
+  .hero-cta {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .ecg-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

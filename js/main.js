@@ -595,8 +595,497 @@ function getActiveSectionId(sections, scrollY) {
 }
 
 /* ==========================================================================
-   DOMContentLoaded — wire up all initialisers
+   Skills animation — floating pill-shaped skill-label particles
    ========================================================================== */
+
+// ── Visual constants ──────────────────────────────────────────────────────────
+const FONT          = '500 0.875rem "Segoe UI", system-ui, sans-serif';
+const PADDING_X     = 12;    // px — matches var(--space-3)
+const PADDING_Y     = 4;     // px — matches var(--space-1)
+const BORDER_RADIUS = 9999;  // full pill
+const TEXT_COLOR    = '#66dfff';
+const BG_COLOR      = 'rgba(0, 200, 255, 0.08)';
+const BORDER_COLOR  = 'rgba(0, 200, 255, 0.25)';
+const MIN_SPEED     = 0.5;   // px/frame
+const MAX_SPEED     = 1.5;   // px/frame
+const LINE_HEIGHT   = 20;    // px — fixed pill line-height
+
+/**
+ * Measure the bounding-box dimensions of a skill label pill.
+ * Sets ctx.font before measuring so the result matches the rendered text.
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {string} label
+ * @returns {{ width: number, height: number }}
+ */
+function measureParticle(ctx, label) {
+  ctx.font = FONT;
+  const textWidth = ctx.measureText(label).width;
+  const width  = textWidth + PADDING_X * 2;
+  const height = LINE_HEIGHT + PADDING_Y * 2;
+  return { width, height };
+}
+
+/**
+ * Create a plain Particle object.
+ *
+ * @param {string} label
+ * @param {number} x      - left edge (px)
+ * @param {number} y      - top edge (px)
+ * @param {number} vx     - horizontal velocity (px/frame)
+ * @param {number} vy     - vertical velocity (px/frame)
+ * @param {number} width  - bounding-box width (px)
+ * @param {number} height - bounding-box height (px)
+ * @returns {Object}
+ */
+function createParticle(label, x, y, vx, vy, width, height) {
+  return { label, x, y, vx, vy, width, height };
+}
+
+/**
+ * Initialise one Particle per unique label, each placed at a random
+ * fully-visible position with a random velocity in [MIN_SPEED, MAX_SPEED].
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} canvasWidth
+ * @param {number} canvasHeight
+ * @param {string[]} labels
+ * @returns {Object[]}
+ */
+function initSkillParticles(ctx, canvasWidth, canvasHeight, labels) {
+  const unique = [...new Set(labels)];
+  return unique.map((label) => {
+    const { width, height } = measureParticle(ctx, label);
+    const x     = Math.random() * (canvasWidth  - width);
+    const y     = Math.random() * (canvasHeight - height);
+    const angle = Math.random() * Math.PI * 2;
+    const speed = MIN_SPEED + Math.random() * (MAX_SPEED - MIN_SPEED);
+    const vx    = Math.cos(angle) * speed;
+    const vy    = Math.sin(angle) * speed;
+    return createParticle(label, x, y, vx, vy, width, height);
+  });
+}
+
+/**
+ * Reflect a particle off canvas boundaries, clamping position and negating
+ * the appropriate velocity component when a boundary is crossed.
+ *
+ * @param {Object} particle
+ * @param {number} canvasWidth
+ * @param {number} canvasHeight
+ */
+function reflectBoundaries(particle, canvasWidth, canvasHeight) {
+  // Left boundary
+  if (particle.x < 0) {
+    particle.x = 0;
+    if (particle.vx < 0) particle.vx = -particle.vx;
+  }
+  // Right boundary
+  if (particle.x + particle.width > canvasWidth) {
+    particle.x = canvasWidth - particle.width;
+    if (particle.vx > 0) particle.vx = -particle.vx;
+  }
+  // Top boundary
+  if (particle.y < 0) {
+    particle.y = 0;
+    if (particle.vy < 0) particle.vy = -particle.vy;
+  }
+  // Bottom boundary
+  if (particle.y + particle.height > canvasHeight) {
+    particle.y = canvasHeight - particle.height;
+    if (particle.vy > 0) particle.vy = -particle.vy;
+  }
+}
+
+/**
+ * Resolve all pairwise AABB collisions in the particle list.
+ * On overlap: swap velocity vectors, then separate all particles so no two overlap.
+ *
+ * @param {Object[]} particles
+ */
+function resolveCollisions(particles) {
+  if (particles.length < 2) return;
+
+  // First pass: detect overlaps and perform velocity exchanges
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i];
+      const b = particles[j];
+
+      const overlapX = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
+      const overlapY = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
+
+      if (overlapX <= 0 || overlapY <= 0) continue; // no overlap
+
+      // Velocity exchange
+      const tmpVx = a.vx; const tmpVy = a.vy;
+      a.vx = b.vx; a.vy = b.vy;
+      b.vx = tmpVx; b.vy = tmpVy;
+    }
+  }
+
+  // Second pass: separate overlapping particles.
+  // Sort by center-x and space out along x-axis to guarantee no overlaps.
+  // This is O(n log n) and always converges.
+  const sorted = particles.slice().sort((a, b) => (a.x + a.width / 2) - (b.x + b.width / 2));
+
+  // Check if any overlaps exist at all; if not, skip separation
+  let hasOverlap = false;
+  outer: for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i]; const b = particles[j];
+      if (
+        Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 0 &&
+        Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 0
+      ) { hasOverlap = true; break outer; }
+    }
+  }
+  if (!hasOverlap) return;
+
+  // Space particles along x-axis: keep the leftmost particle in place,
+  // push each subsequent particle to the right of the previous one.
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = sorted[i - 1];
+    const curr = sorted[i];
+    const minX = prev.x + prev.width; // right edge of previous particle
+    if (curr.x < minX) {
+      curr.x = minX;
+    }
+  }
+}
+
+/**
+ * Advance all particles by one frame: move, reflect off boundaries, resolve collisions.
+ *
+ * @param {Object[]} particles
+ * @param {number} canvasWidth
+ * @param {number} canvasHeight
+ */
+function updateSkillParticles(particles, canvasWidth, canvasHeight) {
+  for (const p of particles) {
+    p.x += p.vx;
+    p.y += p.vy;
+    reflectBoundaries(p, canvasWidth, canvasHeight);
+  }
+  resolveCollisions(particles);
+}
+
+/**
+ * Clear the canvas and draw all skill particles as pill-shaped labels.
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Object[]} particles
+ */
+function renderParticles(ctx, particles) {
+  const { width, height } = ctx.canvas;
+  ctx.clearRect(0, 0, width, height);
+
+  for (const p of particles) {
+    const r = Math.min(BORDER_RADIUS, p.width / 2, p.height / 2);
+
+    // Draw pill background
+    ctx.beginPath();
+    ctx.roundRect(p.x, p.y, p.width, p.height, r);
+    ctx.fillStyle = BG_COLOR;
+    ctx.fill();
+
+    // Draw pill border
+    ctx.beginPath();
+    ctx.roundRect(p.x, p.y, p.width, p.height, r);
+    ctx.strokeStyle = BORDER_COLOR;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Draw label text centered in the pill
+    ctx.font = FONT;
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(p.label, p.x + p.width / 2, p.y + p.height / 2);
+  }
+}
+
+/**
+ * Initialise the skills section animated canvas background.
+ * Exits immediately if prefers-reduced-motion: reduce is set.
+ * Requirements: 1.1–1.5, 2.1–2.4, 3.1–3.3, 4.1–4.3, 5.1–5.4, 6.1–6.4, 7.1–7.3, 8.1–8.4
+ */
+function initSkillsAnimation() {
+  // ── Task 6.1: Reduced-motion guard ───────────────────────────────────────
+  if (
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    return; // Do not inject canvas; leave section in static layout
+  }
+
+  // ── Task 6.2: Inject canvas and get context ───────────────────────────────
+  const section = document.getElementById('skills');
+  if (!section) return;
+
+  const skillTags = section.querySelectorAll('.skill-tag');
+  if (!skillTags.length) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'skills-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  section.insertBefore(canvas, section.firstChild);
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // ── Task 6.3: Read labels, init particles, start animation loop ───────────
+  const labels = Array.from(skillTags).map((el) => el.textContent.trim());
+
+  function resizeCanvas() {
+    canvas.width  = section.offsetWidth;
+    canvas.height = section.offsetHeight;
+  }
+
+  resizeCanvas();
+
+  let particles = initSkillParticles(ctx, canvas.width, canvas.height, labels);
+  let paused = false;
+  let animFrameId;
+
+  function loop() {
+    if (!paused) {
+      updateSkillParticles(particles, canvas.width, canvas.height);
+      renderParticles(ctx, particles);
+    }
+    animFrameId = requestAnimationFrame(loop);
+  }
+
+  // ── Task 6.4: IntersectionObserver for pause/resume ───────────────────────
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(
+      (entries) => {
+        paused = !entries[0].isIntersecting;
+      },
+      { threshold: 0 }
+    ).observe(section);
+  }
+
+  // ── Task 6.5: ResizeObserver (with window.resize fallback) ────────────────
+  function handleResize() {
+    resizeCanvas();
+    if (canvas.width > 0 && canvas.height > 0) {
+      particles = initSkillParticles(ctx, canvas.width, canvas.height, labels);
+    }
+  }
+
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(handleResize).observe(section);
+  } else {
+    window.addEventListener('resize', handleResize);
+  }
+
+  // Start the animation loop
+  animFrameId = requestAnimationFrame(loop);
+}
+
+/* ==========================================================================
+   Scroll-reveal — fade/slide elements in as they enter the viewport
+   ========================================================================== */
+
+/**
+ * Observe all [data-reveal] elements and add the .revealed class
+ * when they cross into the viewport.
+ */
+function initScrollReveal() {
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: show everything immediately
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      el.classList.add('revealed');
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+}
+
+/* ==========================================================================
+   Project detail modal
+   ========================================================================== */
+
+const PROJECT_DATA = {
+  xray: {
+    title: 'Chest X-Ray Abnormality Detection',
+    tags: ['PyTorch', 'Vision Transformer', 'DICOM', 'Radiology AI', 'CheXpert'],
+    description: 'A Vision Transformer (ViT-L/16) model trained on 100,000+ chest X-rays to detect 14 thoracic conditions including pneumonia, pleural effusion, atelectasis, and cardiomegaly. The model was pre-trained on ImageNet-21k and fine-tuned on the CheXpert dataset with multi-label classification. Deployed as a DICOM-integrated screening tool that surfaces probability scores alongside the original image in the radiologist\'s worklist.',
+    highlights: [
+      'AUC 0.94 on the CheXpert benchmark across 14 pathology labels',
+      'DICOM-native integration — reads directly from PACS without format conversion',
+      'Grad-CAM heatmaps overlaid on images for radiologist interpretability',
+      'Reduced average radiologist review time by 35% in pilot deployment',
+      'Inference latency under 300 ms per study on a single A100 GPU',
+    ],
+    github: 'https://github.com/aldrey-canlas/chexray-vit',
+    live: null,
+  },
+  deidentify: {
+    title: 'Clinical Note De-identification Pipeline',
+    tags: ['ClinicalBERT', 'Clinical NLP', 'HIPAA', 'spaCy', 'i2b2'],
+    description: 'A HIPAA-compliant NLP pipeline that automatically removes Protected Health Information (PHI) from free-text clinical notes, enabling safe secondary use of EHR data for research and analytics. The system combines a fine-tuned ClinicalBERT NER model with deterministic rule-based post-processing to handle edge cases such as partial dates, provider initials, and facility codes.',
+    highlights: [
+      '98.7% F1 score on the i2b2 2014 de-identification benchmark',
+      'Handles 18 HIPAA PHI categories including names, dates, locations, and IDs',
+      'Processes 10,000+ notes per hour on a 4-core CPU instance',
+      'Audit trail logging for compliance review and model monitoring',
+      'Deployed as a FHIR-compatible microservice with FastAPI',
+    ],
+    github: 'https://github.com/aldrey-canlas/clinical-deidentify',
+    live: null,
+  },
+  sepsis: {
+    title: 'Sepsis Early-Warning System',
+    tags: ['LSTM', 'Time-Series', 'ICU', 'FastAPI', 'MIMIC-III'],
+    description: 'A real-time sepsis prediction system using bidirectional LSTM networks over multivariate time-series ICU data — vital signs, lab values, and medication records from EHR streams. The model outputs a continuous risk score updated every hour, integrated into a hospital alerting dashboard that notifies the care team when a patient crosses a configurable risk threshold.',
+    highlights: [
+      '88% sensitivity and 82% specificity at a 6-hour prediction horizon',
+      'Trained and validated on MIMIC-III (40,000+ ICU admissions)',
+      'Real-time inference pipeline with sub-second latency via FastAPI',
+      'Configurable alert thresholds to balance sensitivity vs. alert fatigue',
+      'SHAP time-step attribution to explain which vitals drove the risk score',
+    ],
+    github: 'https://github.com/aldrey-canlas/sepsis-alert',
+    live: null,
+  },
+  icd10: {
+    title: 'Automated ICD-10 Coding with LLMs',
+    tags: ['GPT-4', 'LangChain', 'ICD-10', 'FHIR', 'RAG'],
+    description: 'A GPT-4-based pipeline that reads clinical discharge summaries and suggests ICD-10-CM diagnosis and ICD-10-PCS procedure codes with supporting evidence extracted from the note. The system uses Retrieval-Augmented Generation (RAG) over the ICD-10 code hierarchy to ground suggestions in the official coding guidelines, reducing hallucination and improving specificity.',
+    highlights: [
+      'Reduced manual coding time by 50% in a US hospital network pilot',
+      'Improved coding accuracy by 18% vs. the baseline rule-based system',
+      'RAG over ICD-10 hierarchy ensures codes are grounded in official guidelines',
+      'Evidence snippets extracted from the note for each suggested code',
+      'FHIR R4 output format for direct EHR integration',
+    ],
+    github: 'https://github.com/aldrey-canlas/icd10-llm',
+    live: null,
+  },
+  histo: {
+    title: 'Histopathology Slide Classifier',
+    tags: ['PyTorch', 'MIL', 'Pathology AI', 'Whole-Slide Imaging', 'OpenSlide'],
+    description: 'A weakly-supervised Multiple Instance Learning (MIL) model for whole-slide image (WSI) classification of colorectal cancer subtypes. The model tiles each gigapixel slide into 256×256 patches, extracts features with a ResNet-50 encoder, and aggregates patch-level embeddings with an attention-based MIL pooling layer to produce a slide-level diagnosis — without requiring patch-level annotations.',
+    highlights: [
+      '92% accuracy across 9 colorectal cancer subtypes on 3,000+ digitized slides',
+      'Attention heatmaps highlight diagnostically relevant tissue regions',
+      'No patch-level annotations required — trained on slide-level labels only',
+      'Processes a 40× whole-slide image in under 90 seconds on a single GPU',
+      'Enables pathologists to prioritize high-risk cases in their review queue',
+    ],
+    github: 'https://github.com/aldrey-canlas/histo-mil',
+    live: null,
+  },
+  readmit: {
+    title: 'Patient Readmission Risk Predictor',
+    tags: ['XGBoost', 'SHAP', 'EHR', 'Risk Stratification', 'Scikit-learn'],
+    description: 'An XGBoost model predicting 30-day hospital readmission risk from structured EHR features including primary diagnosis, comorbidities, medication count, lab trends, prior admissions, and length of stay. SHAP values are computed per patient at discharge to surface the top contributing risk factors, enabling care teams to target high-risk patients with tailored discharge interventions.',
+    highlights: [
+      'AUC 0.81 on held-out test set across 50,000+ admissions',
+      'SHAP explainability — top 5 risk factors surfaced per patient at discharge',
+      'Integrated into the EHR discharge workflow as a real-time risk score widget',
+      'Stratifies patients into low / medium / high risk tiers for care coordination',
+      'Retrospective validation showed 22% reduction in readmissions for flagged cohort',
+    ],
+    github: 'https://github.com/aldrey-canlas/readmission-risk',
+    live: null,
+  },
+};
+
+/**
+ * Initialise the project detail modal.
+ * Opens on "Details" button click, closes on overlay click, close button, or Escape.
+ */
+function initProjectModal() {
+  const modal     = document.getElementById('project-modal');
+  const closeBtn  = document.getElementById('modal-close');
+  const content   = document.getElementById('modal-content');
+
+  if (!modal || !closeBtn || !content) return;
+
+  // Open modal
+  document.querySelectorAll('.btn-project-detail').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('[data-project]');
+      if (!card) return;
+      const key  = card.dataset.project;
+      const data = PROJECT_DATA[key];
+      if (!data) return;
+
+      // Build modal content
+      const tagsHtml = data.tags
+        .map((t) => `<span class="project-tag">${t}</span>`)
+        .join('');
+
+      const highlightsHtml = data.highlights
+        .map((h) => `<li>${h}</li>`)
+        .join('');
+
+      const actionsHtml = [
+        data.github
+          ? `<a href="${data.github}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+               View on GitHub
+             </a>`
+          : '',
+        data.live
+          ? `<a href="${data.live}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+               Live Demo
+             </a>`
+          : '',
+      ].join('');
+
+      content.innerHTML = `
+        <div class="modal-tags">${tagsHtml}</div>
+        <h2 id="modal-title">${data.title}</h2>
+        <p class="modal-description">${data.description}</p>
+        <div class="modal-highlights">
+          <h3>Key Highlights</h3>
+          <ul>${highlightsHtml}</ul>
+        </div>
+        ${actionsHtml ? `<div class="modal-actions">${actionsHtml}</div>` : ''}
+      `;
+
+      modal.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    });
+  });
+
+  // Close helpers
+  function closeModal() {
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) closeModal();
+  });
+}
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
   initTypewriter();
@@ -605,6 +1094,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initHero();
   initContactForm();
+  initProjectModal();
+  initScrollReveal();
 
   // Update footer year dynamically
   const yearEl = document.getElementById('year');
@@ -612,3 +1103,5 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = new Date().getFullYear();
   }
 });
+
+

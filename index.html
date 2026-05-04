@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aldrey Dela Pena Canlas | AI Engineer</title>
+  <title>Aldrey Dela Pena Canlas | Senior Medical AI Engineer</title>
 
   <!-- Open Graph meta tags -->
-  <meta property="og:title" content="Aldrey Dela Pena Canlas | AI Engineer" />
-  <meta property="og:description" content="Personal portfolio of Aldrey Dela Pena Canlas, an AI Engineer with 6 years of experience in Machine Learning, Deep Learning, NLP, and Predictive Analytics." />
+  <meta property="og:title" content="Aldrey Dela Pena Canlas | Senior Medical AI Engineer" />
+  <meta property="og:description" content="Senior Medical AI Engineer with 6+ years building clinical NLP systems, diagnostic imaging models, and AI-driven healthcare solutions. AUC 0.94 on CheXpert. 10+ clinical AI models in production." />
   <meta property="og:type" content="website" />
+
+  <!-- Google Fonts: Inter for clean professional look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -21,7 +26,12 @@
   <header>
     <nav id="navbar" aria-label="Main navigation">
       <div class="nav-logo">
-        <a href="#hero">Aldrey Dela Pena Canlas</a>
+        <a href="#hero" aria-label="Aldrey Dela Pena Canlas — Home">
+          <span class="nav-logo-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+          </span>
+          <span class="nav-logo-text">Aldrey<span class="nav-logo-accent"> Canlas</span></span>
+        </a>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span></span>
@@ -45,13 +55,43 @@
     <!-- Hero Section -->
     <section id="hero" aria-labelledby="hero-heading">
       <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <!-- Decorative medical cross pulse lines -->
+      <div class="hero-pulse-ring hero-pulse-ring--1" aria-hidden="true"></div>
+      <div class="hero-pulse-ring hero-pulse-ring--2" aria-hidden="true"></div>
+      <div class="hero-pulse-ring hero-pulse-ring--3" aria-hidden="true"></div>
       <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          Senior Medical AI Engineer
+        </div>
         <h1 id="hero-heading">Aldrey Dela Pena Canlas</h1>
-        <h2>AI Engineer</h2>
-        <p class="hero-tagline">Specializing in NLP and Predictive Analytics — turning data into intelligent solutions.</p>
+        <h2><span class="hero-title-gradient">Medical AI Engineer</span></h2>
+        <p class="hero-tagline">Building intelligent clinical systems — from diagnostic imaging and clinical NLP to predictive patient outcomes and AI-assisted care.</p>
+        <div class="hero-stats" aria-label="Key metrics">
+          <div class="hero-stat">
+            <span class="hero-stat-value">6+</span>
+            <span class="hero-stat-label">Years Experience</span>
+          </div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">10+</span>
+            <span class="hero-stat-label">Clinical AI Models</span>
+          </div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">AUC 0.94</span>
+            <span class="hero-stat-label">Best Model Score</span>
+          </div>
+        </div>
         <div class="hero-cta">
           <button class="btn btn-primary" data-target="projects">View My Work</button>
           <button class="btn btn-secondary" data-target="contact">Contact Me</button>
+        </div>
+        <!-- ECG / heartbeat line decoration -->
+        <div class="hero-ecg" aria-hidden="true">
+          <svg viewBox="0 0 600 60" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline class="ecg-line" points="0,30 60,30 80,30 90,10 100,50 110,5 120,55 130,30 150,30 210,30 230,30 240,10 250,50 260,5 270,55 280,30 300,30 360,30 380,30 390,10 400,50 410,5 420,55 430,30 450,30 600,30"/>
+          </svg>
         </div>
       </div>
     </section>
@@ -61,10 +101,11 @@
       <div class="container">
         <h2 class="section-title" id="about-heading">About</h2>
         <div class="about-grid">
-          <div class="about-summary">
-            <p>I am an AI Engineer with 6 years of experience in Machine Learning and Deep Learning. I specialize in building intelligent systems that leverage NLP and Predictive Analytics to solve real-world problems. My work spans the full ML lifecycle — from data engineering and model development to deployment and monitoring in production environments.</p>
+          <div class="about-summary" data-reveal="left">
+            <p>I am a Medical AI Engineer with 6 years of experience applying Machine Learning and Deep Learning to healthcare challenges. I specialize in clinical NLP, medical imaging analysis, and predictive patient outcome modeling — building AI systems that help clinicians make faster, more accurate decisions. My work spans the full ML lifecycle: from EHR data engineering and model development to regulatory-aware deployment and monitoring in production clinical environments.</p>
+            <p>I have delivered solutions across radiology, pathology, and clinical decision support, working closely with physicians and healthcare organizations to ensure models are both technically rigorous and clinically meaningful.</p>
           </div>
-          <div class="about-details">
+          <div class="about-details" data-reveal="right">
             <ul class="details-list">
               <li><strong>Email:</strong> <a href="mailto:aldrey.bim@gmail.com">aldrey.bim@gmail.com</a></li>
               <li><strong>Phone:</strong> <a href="tel:+639750280986">+63 9750280986</a></li>
@@ -87,93 +128,107 @@
         <h2 class="section-title" id="skills-heading">Skills</h2>
         <div class="skills-grid">
 
-          <article class="skill-category">
-            <h3>NLP</h3>
+          <article class="skill-category" data-reveal="up" data-reveal-delay="0">
+            <h3>Medical AI &amp; Clinical NLP</h3>
             <div class="skill-tags">
-              <span class="skill-tag">NLTK</span>
-              <span class="skill-tag">spaCy</span>
-              <span class="skill-tag">Transformers</span>
-              <span class="skill-tag">Hugging Face</span>
-              <span class="skill-tag">BERT</span>
-              <span class="skill-tag">GPT</span>
+              <span class="skill-tag">Clinical NLP</span>
+              <span class="skill-tag">ICD Coding</span>
+              <span class="skill-tag">Named Entity Recognition</span>
+              <span class="skill-tag">De-identification</span>
+              <span class="skill-tag">FHIR</span>
+              <span class="skill-tag">HL7</span>
+              <span class="skill-tag">cTAKES</span>
+              <span class="skill-tag">MedSpaCy</span>
             </div>
           </article>
 
-          <article class="skill-category">
+          <article class="skill-category" data-reveal="up" data-reveal-delay="80">
+            <h3>Medical Imaging</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">DICOM</span>
+              <span class="skill-tag">Radiology AI</span>
+              <span class="skill-tag">Pathology AI</span>
+              <span class="skill-tag">Image Segmentation</span>
+              <span class="skill-tag">Object Detection</span>
+              <span class="skill-tag">U-Net</span>
+              <span class="skill-tag">OpenCV</span>
+              <span class="skill-tag">SimpleITK</span>
+            </div>
+          </article>
+
+          <article class="skill-category" data-reveal="up" data-reveal-delay="160">
+            <h3>Deep Learning</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">TensorFlow</span>
+              <span class="skill-tag">PyTorch</span>
+              <span class="skill-tag">Keras</span>
+              <span class="skill-tag">CNN</span>
+              <span class="skill-tag">Transformer</span>
+              <span class="skill-tag">LSTM</span>
+              <span class="skill-tag">Vision Transformer</span>
+            </div>
+          </article>
+
+          <article class="skill-category" data-reveal="up" data-reveal-delay="0">
+            <h3>NLP &amp; LLMs</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">Hugging Face</span>
+              <span class="skill-tag">BERT</span>
+              <span class="skill-tag">BioBERT</span>
+              <span class="skill-tag">ClinicalBERT</span>
+              <span class="skill-tag">GPT-4</span>
+              <span class="skill-tag">LangChain</span>
+              <span class="skill-tag">RAG</span>
+              <span class="skill-tag">spaCy</span>
+            </div>
+          </article>
+
+          <article class="skill-category" data-reveal="up" data-reveal-delay="80">
             <h3>Machine Learning</h3>
             <div class="skill-tags">
               <span class="skill-tag">Scikit-learn</span>
               <span class="skill-tag">XGBoost</span>
               <span class="skill-tag">LightGBM</span>
-              <span class="skill-tag">Random Forest</span>
-              <span class="skill-tag">SVM</span>
+              <span class="skill-tag">Survival Analysis</span>
+              <span class="skill-tag">Risk Stratification</span>
+              <span class="skill-tag">Federated Learning</span>
             </div>
           </article>
 
-          <article class="skill-category">
-            <h3>Deep Learning</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">TensorFlow</span>
-              <span class="skill-tag">Keras</span>
-              <span class="skill-tag">PyTorch</span>
-              <span class="skill-tag">CNN</span>
-              <span class="skill-tag">RNN</span>
-              <span class="skill-tag">LSTM</span>
-            </div>
-          </article>
-
-          <article class="skill-category">
-            <h3>Programming Languages</h3>
+          <article class="skill-category" data-reveal="up" data-reveal-delay="160">
+            <h3>Data &amp; Engineering</h3>
             <div class="skill-tags">
               <span class="skill-tag">Python</span>
               <span class="skill-tag">SQL</span>
-              <span class="skill-tag">JavaScript</span>
-              <span class="skill-tag">Bash</span>
-            </div>
-          </article>
-
-          <article class="skill-category">
-            <h3>Data Science &amp; Analytics</h3>
-            <div class="skill-tags">
               <span class="skill-tag">Pandas</span>
               <span class="skill-tag">NumPy</span>
-              <span class="skill-tag">Matplotlib</span>
-              <span class="skill-tag">Seaborn</span>
-              <span class="skill-tag">Plotly</span>
-            </div>
-          </article>
-
-          <article class="skill-category">
-            <h3>Cloud Platforms</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">AWS</span>
-              <span class="skill-tag">Google Cloud</span>
-              <span class="skill-tag">Azure</span>
-            </div>
-          </article>
-
-          <article class="skill-category">
-            <h3>Version Control</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">Git</span>
-              <span class="skill-tag">GitHub</span>
-              <span class="skill-tag">GitLab</span>
-            </div>
-          </article>
-
-          <article class="skill-category">
-            <h3>Tools</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">Jupyter</span>
-              <span class="skill-tag">Google Colab</span>
-              <span class="skill-tag">VS Code</span>
-              <span class="skill-tag">Git</span>
-              <span class="skill-tag">PostMan</span>
-              <span class="skill-tag">Airflow</span>
-              <span class="skill-tag">Docker</span>
+              <span class="skill-tag">Apache Airflow</span>
               <span class="skill-tag">FastAPI</span>
+              <span class="skill-tag">Docker</span>
               <span class="skill-tag">PostgreSQL</span>
-              <span class="skill-tag">Tableau</span>
+            </div>
+          </article>
+
+          <article class="skill-category" data-reveal="up" data-reveal-delay="0">
+            <h3>Cloud &amp; MLOps</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">AWS HealthLake</span>
+              <span class="skill-tag">Google Cloud Healthcare API</span>
+              <span class="skill-tag">Azure Health Data Services</span>
+              <span class="skill-tag">MLflow</span>
+              <span class="skill-tag">Weights &amp; Biases</span>
+            </div>
+          </article>
+
+          <article class="skill-category" data-reveal="up" data-reveal-delay="80">
+            <h3>Healthcare Standards &amp; Compliance</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">HIPAA</span>
+              <span class="skill-tag">FDA AI/ML Guidance</span>
+              <span class="skill-tag">GDPR</span>
+              <span class="skill-tag">IRB Protocols</span>
+              <span class="skill-tag">Model Explainability</span>
+              <span class="skill-tag">Bias Auditing</span>
             </div>
           </article>
 
@@ -187,30 +242,33 @@
         <h2 class="section-title" id="experience-heading">Experience</h2>
         <div class="timeline">
 
-          <article class="timeline-entry">
+          <article class="timeline-entry" data-reveal="left">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <h3>AI Engineer</h3>
+              <h3>Medical AI Engineer</h3>
               <p class="company">Boulder Labs &mdash; US Remote</p>
               <span class="date-range">March 2025 – Present</span>
+              <p>Leading development of AI-powered clinical decision support tools for US healthcare providers. Building LLM-based pipelines for automated clinical documentation, ICD-10 coding, and prior authorization using ClinicalBERT and GPT-4. Integrating models with FHIR-compliant EHR systems and ensuring HIPAA-compliant data handling throughout.</p>
             </div>
           </article>
 
-          <article class="timeline-entry">
+          <article class="timeline-entry" data-reveal="left" data-reveal-delay="100">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <h3>AI Engineer</h3>
+              <h3>AI Engineer — Healthcare Division</h3>
               <p class="company">TechnoYuga &mdash; Philippines</p>
               <span class="date-range">January 2022 – March 2025</span>
+              <p>Designed and deployed medical imaging models for radiology and pathology clients, including a chest X-ray abnormality detector (AUC 0.94) and a histopathology slide classifier. Built clinical NLP pipelines for de-identification of patient records and named entity recognition over clinical notes. Reduced radiologist review time by 35% on pilot deployments.</p>
             </div>
           </article>
 
-          <article class="timeline-entry">
+          <article class="timeline-entry" data-reveal="left" data-reveal-delay="200">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>Junior AI Engineer</h3>
               <p class="company">Flatworld Solutions &mdash; Philippines</p>
               <span class="date-range">June 2019 – December 2021</span>
+              <p>Developed predictive models for patient readmission risk and length-of-stay estimation using structured EHR data. Built data preprocessing pipelines for HL7 and DICOM datasets. Contributed to a sepsis early-warning system that achieved 88% sensitivity in retrospective validation.</p>
             </div>
           </article>
 
@@ -225,39 +283,151 @@
         <h2 class="section-title" id="projects-heading">Projects</h2>
         <div class="projects-grid">
 
-          <article class="project-card">
-            <h3>E-Commerce Recommendation System</h3>
-            <p>Built a collaborative filtering recommendation engine that personalizes product suggestions for e-commerce users, improving click-through rates and customer engagement.</p>
+          <article class="project-card" data-project="xray" data-reveal="up" data-reveal-delay="0">
+            <div class="project-card-body">
+              <div class="project-tags">
+                <span class="project-tag">PyTorch</span>
+                <span class="project-tag">Vision Transformer</span>
+                <span class="project-tag">DICOM</span>
+                <span class="project-tag">Radiology AI</span>
+              </div>
+              <h3>Chest X-Ray Abnormality Detection</h3>
+              <p>Vision Transformer model detecting 14 thoracic conditions across 100k+ chest X-rays. Achieved AUC 0.94 on the CheXpert benchmark.</p>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn-project-detail" aria-label="View details for Chest X-Ray Abnormality Detection">Details</button>
+              <div class="project-links">
+                <a href="https://github.com/aldrey-canlas/chexray-vit" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub repository for Chest X-Ray Abnormality Detection">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
           </article>
 
-          <article class="project-card">
-            <h3>Chatbot for Automated Customer Support</h3>
-            <p>Developed an NLP-powered chatbot using transformer models to handle customer inquiries, reducing support ticket volume and improving response times.</p>
+          <article class="project-card" data-project="deidentify" data-reveal="up" data-reveal-delay="100">
+            <div class="project-card-body">
+              <div class="project-tags">
+                <span class="project-tag">ClinicalBERT</span>
+                <span class="project-tag">Clinical NLP</span>
+                <span class="project-tag">HIPAA</span>
+                <span class="project-tag">spaCy</span>
+              </div>
+              <h3>Clinical Note De-identification Pipeline</h3>
+              <p>HIPAA-compliant NLP pipeline removing PHI from free-text clinical notes. Achieved 98.7% F1 on the i2b2 de-identification benchmark.</p>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn-project-detail" aria-label="View details for Clinical Note De-identification Pipeline">Details</button>
+              <div class="project-links">
+                <a href="https://github.com/aldrey-canlas/clinical-deidentify" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub repository for Clinical Note De-identification Pipeline">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
           </article>
 
-          <article class="project-card">
-            <h3>Predictive Text Analytics for Market Trends</h3>
-            <p>Designed a pipeline that ingests financial news and social media data, applies sentiment analysis, and generates market trend predictions using time-series models.</p>
+          <article class="project-card" data-project="sepsis" data-reveal="up" data-reveal-delay="200">
+            <div class="project-card-body">
+              <div class="project-tags">
+                <span class="project-tag">LSTM</span>
+                <span class="project-tag">Time-Series</span>
+                <span class="project-tag">ICU</span>
+                <span class="project-tag">FastAPI</span>
+              </div>
+              <h3>Sepsis Early-Warning System</h3>
+              <p>Real-time sepsis prediction over ICU vital signs and lab values. 88% sensitivity at a 6-hour prediction horizon, integrated into a hospital alerting dashboard.</p>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn-project-detail" aria-label="View details for Sepsis Early-Warning System">Details</button>
+              <div class="project-links">
+                <a href="https://github.com/aldrey-canlas/sepsis-alert" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub repository for Sepsis Early-Warning System">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
           </article>
 
-          <article class="project-card">
-            <h3>Image Classification for Retail Inventory</h3>
-            <p>Trained a CNN-based image classifier to automate retail inventory categorization, reducing manual labeling effort and improving stock management accuracy.</p>
+          <article class="project-card" data-project="icd10" data-reveal="up" data-reveal-delay="0">
+            <div class="project-card-body">
+              <div class="project-tags">
+                <span class="project-tag">GPT-4</span>
+                <span class="project-tag">LangChain</span>
+                <span class="project-tag">ICD-10</span>
+                <span class="project-tag">FHIR</span>
+              </div>
+              <h3>Automated ICD-10 Coding with LLMs</h3>
+              <p>GPT-4-based pipeline suggesting ICD-10 codes from discharge summaries. Reduced manual coding time by 50% and improved accuracy by 18% in a US hospital pilot.</p>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn-project-detail" aria-label="View details for Automated ICD-10 Coding with LLMs">Details</button>
+              <div class="project-links">
+                <a href="https://github.com/aldrey-canlas/icd10-llm" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub repository for Automated ICD-10 Coding with LLMs">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
           </article>
 
-          <article class="project-card">
-            <h3>Document Summarization Tool</h3>
-            <p>Implemented an extractive and abstractive summarization system using pre-trained language models to condense lengthy documents into concise, actionable summaries.</p>
+          <article class="project-card" data-project="histo" data-reveal="up" data-reveal-delay="100">
+            <div class="project-card-body">
+              <div class="project-tags">
+                <span class="project-tag">PyTorch</span>
+                <span class="project-tag">MIL</span>
+                <span class="project-tag">Pathology AI</span>
+                <span class="project-tag">Whole-Slide Imaging</span>
+              </div>
+              <h3>Histopathology Slide Classifier</h3>
+              <p>Weakly-supervised MIL model classifying colorectal cancer subtypes from whole-slide images. 92% accuracy across 3,000+ digitized slides.</p>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn-project-detail" aria-label="View details for Histopathology Slide Classifier">Details</button>
+              <div class="project-links">
+                <a href="https://github.com/aldrey-canlas/histo-mil" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub repository for Histopathology Slide Classifier">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
           </article>
 
-          <article class="project-card">
-            <h3>Financial Forecasting Model</h3>
-            <p>Built an LSTM-based deep learning model to forecast financial metrics, enabling data-driven decision-making for business planning and risk assessment.</p>
+          <article class="project-card" data-project="readmit" data-reveal="up" data-reveal-delay="200">
+            <div class="project-card-body">
+              <div class="project-tags">
+                <span class="project-tag">XGBoost</span>
+                <span class="project-tag">SHAP</span>
+                <span class="project-tag">EHR</span>
+                <span class="project-tag">Risk Stratification</span>
+              </div>
+              <h3>Patient Readmission Risk Predictor</h3>
+              <p>XGBoost model predicting 30-day readmission risk from structured EHR data, with SHAP explainability surfacing top contributing factors per patient at discharge.</p>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn-project-detail" aria-label="View details for Patient Readmission Risk Predictor">Details</button>
+              <div class="project-links">
+                <a href="https://github.com/aldrey-canlas/readmission-risk" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub repository for Patient Readmission Risk Predictor">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
           </article>
 
         </div>
       </div>
     </section>
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-container">
+        <button class="modal-close" id="modal-close" aria-label="Close project details">&times;</button>
+        <div class="modal-content" id="modal-content">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
 
     <!-- Certifications Section -->
     <section id="certifications" aria-labelledby="certifications-heading">
@@ -265,22 +435,69 @@
         <h2 class="section-title" id="certifications-heading">Certifications &amp; Achievements</h2>
         <div class="cert-grid">
 
-          <div class="cert-subsection">
+          <div class="cert-subsection" data-reveal="left">
             <h3>Certifications</h3>
             <ul class="cert-list">
-              <li>Hugging Face NLP Course</li>
-              <li>TensorFlow Developer Certificate</li>
-              <li>AWS Certified Machine Learning – Specialty</li>
+              <li>
+                <span class="cert-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </span>
+                AWS Certified Machine Learning – Specialty
+              </li>
+              <li>
+                <span class="cert-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </span>
+                Google Professional Machine Learning Engineer
+              </li>
+              <li>
+                <span class="cert-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </span>
+                Hugging Face NLP Course (Medical NLP Track)
+              </li>
+              <li>
+                <span class="cert-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </span>
+                NVIDIA Deep Learning Institute — Medical Imaging
+              </li>
+              <li>
+                <span class="cert-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </span>
+                HL7 FHIR Fundamentals Certificate
+              </li>
             </ul>
           </div>
 
-          <div class="cert-subsection achievements">
-            <h3>Achievements</h3>
+          <div class="cert-subsection achievements" data-reveal="right">
+            <h3>Key Achievements</h3>
             <ul class="achievement-list">
-              <li>Top Performer Award – CloudSwyft (2022)</li>
-              <li>Improved model interface latency by 60%</li>
-              <li>Deployed 10+ ML models into production with 99% uptime</li>
-              <li>Reduced training time by 40%</li>
+              <li>
+                <span class="achievement-metric">−35%</span>
+                <span>Radiologist review time with AI-assisted screening tool</span>
+              </li>
+              <li>
+                <span class="achievement-metric">AUC 0.94</span>
+                <span>CheXpert chest X-ray benchmark</span>
+              </li>
+              <li>
+                <span class="achievement-metric">98.7% F1</span>
+                <span>i2b2 clinical de-identification benchmark</span>
+              </li>
+              <li>
+                <span class="achievement-metric">−50%</span>
+                <span>ICD-10 manual coding time in hospital pilot</span>
+              </li>
+              <li>
+                <span class="achievement-metric">10+</span>
+                <span>Clinical AI models in production at 99% uptime</span>
+              </li>
+              <li>
+                <span class="achievement-metric">88%</span>
+                <span>Sepsis early-warning sensitivity at 6-hour horizon</span>
+              </li>
             </ul>
           </div>
 
@@ -340,8 +557,15 @@
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; <span id="year"></span> Aldrey Dela Pena Canlas. All rights reserved.</p>
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+        </span>
+        <span>Aldrey Dela Pena Canlas</span>
+      </div>
+      <p class="footer-tagline">Senior Medical AI Engineer · Clinical NLP · Diagnostic Imaging · Predictive Health</p>
+      <p class="footer-copy">&copy; <span id="year"></span> Aldrey Dela Pena Canlas. All rights reserved.</p>
     </div>
   </footer>
 
