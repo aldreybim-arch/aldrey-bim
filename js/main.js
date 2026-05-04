@@ -885,6 +885,178 @@ function initSkillsAnimation() {
 }
 
 /* ==========================================================================
+   Hero ECG background — continuous canvas-drawn heartbeat lines
+   ========================================================================== */
+
+/**
+ * One ECG waveform shape as normalised Y offsets (0 = centre, -1 = top, +1 = bottom).
+ * Represents: flat → small bump → sharp spike up → deep trough → recovery → flat
+ */
+const ECG_SHAPE = [
+  // flat lead-in
+  [0, 0], [0.08, 0], [0.14, 0],
+  // P wave (small bump)
+  [0.17, -0.12], [0.20, -0.18], [0.23, -0.12],
+  // PR segment
+  [0.26, 0], [0.30, 0],
+  // QRS complex
+  [0.32, 0.10],   // Q — small dip
+  [0.34, -0.95],  // R — sharp spike up
+  [0.36, 0.55],   // S — deep trough
+  [0.38, 0],
+  // ST segment
+  [0.42, 0], [0.46, 0],
+  // T wave
+  [0.50, -0.22], [0.55, -0.35], [0.60, -0.22],
+  // flat tail
+  [0.65, 0], [0.75, 0], [0.85, 0], [1.0, 0],
+];
+
+/**
+ * Interpolate the ECG shape at a given x position (0–1).
+ * Returns the normalised Y value.
+ */
+function ecgY(x) {
+  const shape = ECG_SHAPE;
+  for (let i = 0; i < shape.length - 1; i++) {
+    const [x0, y0] = shape[i];
+    const [x1, y1] = shape[i + 1];
+    if (x >= x0 && x <= x1) {
+      const t = (x - x0) / (x1 - x0);
+      return y0 + (y1 - y0) * t;
+    }
+  }
+  return 0;
+}
+
+/**
+ * Draw a continuously scrolling ECG on a canvas element.
+ *
+ * @param {HTMLCanvasElement} canvas
+ * @param {{ color: string, opacity: number, speed: number, glowRadius: number }} opts
+ */
+function initEcgTrack(canvas, opts) {
+  if (!canvas) return;
+
+  const { color, opacity, speed, glowRadius } = opts;
+
+  // Resize canvas to match its CSS size
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+
+  const ro = window.ResizeObserver
+    ? new ResizeObserver(resize)
+    : null;
+  if (ro) ro.observe(canvas);
+  else window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+
+  // How many pixels one full ECG cycle spans
+  const CYCLE_PX = 320;
+
+  // Offset advances each frame — drives the scroll
+  let offset = 0;
+  let paused = false;
+
+  // Pause when hero is off-screen
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      paused = !entries[0].isIntersecting;
+    }, { threshold: 0 }).observe(canvas.closest('#hero') || canvas);
+  }
+
+  function draw() {
+    const W = canvas.width;
+    const H = canvas.height;
+    if (W === 0 || H === 0) {
+      requestAnimationFrame(draw);
+      return;
+    }
+
+    ctx.clearRect(0, 0, W, H);
+
+    const midY   = H / 2;
+    const amp    = H * 0.42; // amplitude in px
+
+    ctx.save();
+    ctx.globalAlpha = opacity;
+    ctx.strokeStyle = color;
+    ctx.lineWidth   = 1.5;
+    ctx.lineJoin    = 'round';
+    ctx.lineCap     = 'round';
+
+    if (glowRadius > 0) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur  = glowRadius;
+    }
+
+    ctx.beginPath();
+
+    // Draw enough cycles to fill the canvas width, shifted by offset
+    const startCycle = Math.floor(-offset / CYCLE_PX) - 1;
+    const endCycle   = Math.ceil((W - offset) / CYCLE_PX) + 1;
+
+    let first = true;
+    const STEPS = 120; // points per cycle
+
+    for (let c = startCycle; c <= endCycle; c++) {
+      for (let s = 0; s <= STEPS; s++) {
+        const t  = s / STEPS;                        // 0–1 within cycle
+        const px = c * CYCLE_PX + t * CYCLE_PX + offset;
+        const py = midY + ecgY(t) * amp;
+
+        if (first) { ctx.moveTo(px, py); first = false; }
+        else        { ctx.lineTo(px, py); }
+      }
+    }
+
+    ctx.stroke();
+    ctx.restore();
+
+    if (!paused) offset -= speed;
+
+    // Wrap offset to prevent float drift
+    if (Math.abs(offset) > CYCLE_PX * 100) offset = 0;
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+/**
+ * Initialise all three hero ECG background tracks.
+ */
+function initHeroEcg() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  initEcgTrack(document.getElementById('ecg-track-top'), {
+    color:      '#00d4ff',
+    opacity:    0.14,
+    speed:      0.8,
+    glowRadius: 0,
+  });
+
+  initEcgTrack(document.getElementById('ecg-track-mid'), {
+    color:      '#00d4ff',
+    opacity:    0.28,
+    speed:      1.2,
+    glowRadius: 6,
+  });
+
+  initEcgTrack(document.getElementById('ecg-track-bot'), {
+    color:      '#7ae8ff',
+    opacity:    0.08,
+    speed:      0.5,
+    glowRadius: 0,
+  });
+}
+
+/* ==========================================================================
    Scroll-reveal — fade/slide elements in as they enter the viewport
    ========================================================================== */
 
@@ -1005,6 +1177,96 @@ const PROJECT_DATA = {
     github: 'https://github.com/aldrey-canlas/readmission-risk',
     live: null,
   },
+
+  druginteract: {
+    title: 'Drug–Drug Interaction Predictor',
+    tags: ['Graph Neural Network', 'PyTorch Geometric', 'Drug Safety', 'Knowledge Graph', 'DrugBank'],
+    description: 'A Graph Neural Network (GNN) trained over a biomedical knowledge graph combining DrugBank, SIDER, and OFFSIDES to predict adverse drug–drug interactions (DDIs). The model represents drugs as nodes and known interactions as edges, learning rich molecular and pharmacological embeddings to flag dangerous polypharmacy combinations before they reach the patient.',
+    highlights: [
+      'AUROC 0.91 on the DrugBank DDI benchmark across 86 interaction types',
+      'Knowledge graph integrates 10,000+ drugs and 200,000+ known interactions',
+      'Flags high-risk polypharmacy combinations at prescription time via FastAPI endpoint',
+      'Outperforms DeepDDI baseline by 4.2% AUROC on held-out test set',
+      'Deployed as a clinical pharmacist decision-support tool in a hospital pilot',
+    ],
+    github: 'https://github.com/aldrey-canlas/ddi-gnn',
+    live: null,
+  },
+
+  retinopathy: {
+    title: 'Diabetic Retinopathy Grading System',
+    tags: ['PyTorch', 'EfficientNet-B4', 'Ophthalmology AI', 'Fundus Imaging', 'Kaggle DR'],
+    description: 'An EfficientNet-B4 model trained on 88,000+ fundus photographs to grade diabetic retinopathy severity on the 0–4 International Clinical DR scale (No DR → Proliferative DR). The model uses a combination of standard cross-entropy and ordinal regression loss to respect the severity ordering, with test-time augmentation for robust predictions.',
+    highlights: [
+      'Quadratic weighted kappa of 0.93 on the Kaggle Diabetic Retinopathy benchmark',
+      'Trained on 88,702 fundus images with clinician-verified labels',
+      'Grad-CAM visualizations highlight lesion regions driving the grade prediction',
+      'Enables automated mass screening — processes 1,000 images per hour on a single GPU',
+      'Sensitivity 94% / specificity 91% for referable DR (grade ≥ 2) detection',
+    ],
+    github: 'https://github.com/aldrey-canlas/retinopathy-grading',
+    live: null,
+  },
+
+  clinicalsumm: {
+    title: 'Clinical Discharge Summary Generator',
+    tags: ['LLaMA 3', 'Fine-tuning', 'Clinical NLP', 'Summarization', 'LoRA'],
+    description: 'A LLaMA 3 8B model fine-tuned with LoRA on 15,000 paired (clinical notes → discharge summary) examples from de-identified EHR data. The model generates structured discharge summaries covering diagnosis, hospital course, medications, follow-up instructions, and pending results — directly from raw admission notes, progress notes, and procedure reports.',
+    highlights: [
+      'Reduced physician documentation time by 45% in a 3-department hospital pilot',
+      'Physician-rated accuracy of 4.3/5 for clinical correctness and completeness',
+      'ROUGE-L score of 0.61 vs. human-written summaries on held-out test set',
+      'LoRA fine-tuning on a single A100 GPU in under 8 hours',
+      'Hallucination rate under 3% as measured by physician review of 500 samples',
+    ],
+    github: 'https://github.com/aldrey-canlas/clinical-summarizer',
+    live: null,
+  },
+
+  braintumor: {
+    title: 'Brain Tumor Segmentation (MRI)',
+    tags: ['3D U-Net', 'MRI Segmentation', 'BraTS 2023', 'Neuro AI', 'nnU-Net'],
+    description: 'A 3D U-Net model (based on nnU-Net framework) segmenting three glioma sub-regions — enhancing tumor (ET), tumor core (TC), and whole tumor (WT) — from multi-modal MRI scans (T1, T1ce, T2, FLAIR). The model uses deep supervision, data augmentation with elastic deformations, and a combined Dice + cross-entropy loss for robust boundary delineation.',
+    highlights: [
+      'Mean Dice score 0.88 on BraTS 2023 validation set (ET: 0.84, TC: 0.89, WT: 0.91)',
+      'Trained on 1,251 multi-modal MRI cases from the BraTS 2023 training set',
+      'Inference time under 15 seconds per case on a single RTX 3090',
+      '3D volumetric output compatible with ITK-SNAP and 3D Slicer for surgical planning',
+      'Uncertainty maps generated via Monte Carlo dropout for radiologist confidence scoring',
+    ],
+    github: 'https://github.com/aldrey-canlas/brain-tumor-seg',
+    live: null,
+  },
+
+  federated: {
+    title: 'Federated Learning for Multi-Site EHR',
+    tags: ['Federated Learning', 'Flower', 'Privacy-Preserving AI', 'Multi-site', 'Differential Privacy'],
+    description: 'A federated learning framework built with Flower (flwr) enabling 5 geographically distributed hospital sites to collaboratively train a 30-day ICU mortality prediction model without any raw patient data leaving each site. The system uses FedAvg aggregation with differential privacy noise injection to provide formal privacy guarantees, and supports heterogeneous data distributions across sites.',
+    highlights: [
+      'Matched centralized training AUC (0.83) within 2% using only federated updates',
+      '5 hospital sites — no raw patient data shared across institutional boundaries',
+      'Differential privacy (ε=1.0) applied at each client before gradient upload',
+      'Handles non-IID data distributions across sites with FedProx regularization',
+      'Communication-efficient: converges in 30 rounds vs. 200+ for naive FedAvg',
+    ],
+    github: 'https://github.com/aldrey-canlas/federated-ehr',
+    live: null,
+  },
+
+  ecgclassify: {
+    title: 'ECG Arrhythmia Classification',
+    tags: ['1D CNN', 'Transformer', 'ECG Analysis', 'Cardiology AI', 'PhysioNet'],
+    description: 'A hybrid 1D CNN–Transformer model classifying 17 arrhythmia types from 12-lead ECG signals. The CNN layers extract local morphological features (QRS shape, P-wave, T-wave) while the Transformer encoder captures long-range temporal dependencies across the full 10-second recording. Trained on the PhysioNet 2021 Challenge dataset with multi-label classification.',
+    highlights: [
+      'Macro F1 score of 96.4% across 17 arrhythmia classes on PhysioNet 2021',
+      'Real-time inference under 50 ms per 12-lead ECG on CPU — suitable for bedside monitors',
+      'Attention maps highlight the specific ECG segments driving each classification',
+      'Handles noisy and artifact-corrupted signals with robust preprocessing pipeline',
+      'Outperforms single-modality CNN and LSTM baselines by 3.1% macro F1',
+    ],
+    github: 'https://github.com/aldrey-canlas/ecg-arrhythmia',
+    live: null,
+  },
 };
 
 /**
@@ -1089,7 +1351,8 @@ function initProjectModal() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initTypewriter();
-  initParticles();
+  // initParticles() removed — hero canvas replaced with ECG line decorations
+  initHeroEcg();
   initBinaryRain('projects-canvas');
   initNavigation();
   initHero();
