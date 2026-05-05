@@ -1459,6 +1459,24 @@ main {
   color: var(--color-bg);
 }
 
+/* Private Repo badge — non-interactive, muted lock indicator */
+.btn-private-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  background-color: rgba(136, 146, 164, 0.08);
+  border: 0.0625rem solid rgba(136, 146, 164, 0.25);
+  border-radius: var(--radius-md);
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 .project-links {
   display: flex;
   align-items: center;
@@ -1617,6 +1635,35 @@ main {
 .modal-actions .btn {
   padding: var(--space-3) var(--space-6);
   font-size: var(--font-size-sm);
+}
+
+/* Private repo badge inside modal */
+.modal-private-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  background-color: rgba(136, 146, 164, 0.08);
+  border: 0.0625rem solid rgba(136, 146, 164, 0.25);
+  border-radius: var(--radius-md);
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.modal-private-repo-label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.modal-private-repo-url {
+  font-size: var(--font-size-xs);
+  color: rgba(136, 146, 164, 0.7);
+  font-family: var(--font-family-mono);
+  letter-spacing: 0;
 }
 
 /* Mobile modal */

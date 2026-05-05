@@ -1104,7 +1104,7 @@ const PROJECT_DATA = {
       'Reduced average radiologist review time by 35% in pilot deployment',
       'Inference latency under 300 ms per study on a single A100 GPU',
     ],
-    github: 'https://github.com/aldrey-canlas/chexray-vit',
+    github: 'https://github.com/radiology-ai-corp/chexpert-vit-screening',
     live: null,
   },
   deidentify: {
@@ -1118,7 +1118,7 @@ const PROJECT_DATA = {
       'Audit trail logging for compliance review and model monitoring',
       'Deployed as a FHIR-compatible microservice with FastAPI',
     ],
-    github: 'https://github.com/aldrey-canlas/clinical-deidentify',
+    github: 'https://github.com/boulder-labs-ai/clinical-phi-deidentifier',
     live: null,
   },
   sepsis: {
@@ -1132,7 +1132,7 @@ const PROJECT_DATA = {
       'Configurable alert thresholds to balance sensitivity vs. alert fatigue',
       'SHAP time-step attribution to explain which vitals drove the risk score',
     ],
-    github: 'https://github.com/aldrey-canlas/sepsis-alert',
+    github: 'https://github.com/icu-intelligence/sepsis-early-warning',
     live: null,
   },
   icd10: {
@@ -1146,7 +1146,7 @@ const PROJECT_DATA = {
       'Evidence snippets extracted from the note for each suggested code',
       'FHIR R4 output format for direct EHR integration',
     ],
-    github: 'https://github.com/aldrey-canlas/icd10-llm',
+    github: 'https://github.com/technoyuga-health/icd10-llm-autocoder',
     live: null,
   },
   histo: {
@@ -1160,7 +1160,7 @@ const PROJECT_DATA = {
       'Processes a 40× whole-slide image in under 90 seconds on a single GPU',
       'Enables pathologists to prioritize high-risk cases in their review queue',
     ],
-    github: 'https://github.com/aldrey-canlas/histo-mil',
+    github: 'https://github.com/pathvision-ai/wsi-mil-classifier',
     live: null,
   },
   readmit: {
@@ -1174,7 +1174,7 @@ const PROJECT_DATA = {
       'Stratifies patients into low / medium / high risk tiers for care coordination',
       'Retrospective validation showed 22% reduction in readmissions for flagged cohort',
     ],
-    github: 'https://github.com/aldrey-canlas/readmission-risk',
+    github: 'https://github.com/flatworld-mlops/readmission-risk-predictor',
     live: null,
   },
 
@@ -1189,7 +1189,7 @@ const PROJECT_DATA = {
       'Outperforms DeepDDI baseline by 4.2% AUROC on held-out test set',
       'Deployed as a clinical pharmacist decision-support tool in a hospital pilot',
     ],
-    github: 'https://github.com/aldrey-canlas/ddi-gnn',
+    github: 'https://github.com/pharmasafe-ai/ddi-gnn-polypharmacy',
     live: null,
   },
 
@@ -1204,7 +1204,7 @@ const PROJECT_DATA = {
       'Enables automated mass screening — processes 1,000 images per hour on a single GPU',
       'Sensitivity 94% / specificity 91% for referable DR (grade ≥ 2) detection',
     ],
-    github: 'https://github.com/aldrey-canlas/retinopathy-grading',
+    github: 'https://github.com/ophthalmai-research/diabetic-retinopathy-grader',
     live: null,
   },
 
@@ -1219,7 +1219,7 @@ const PROJECT_DATA = {
       'LoRA fine-tuning on a single A100 GPU in under 8 hours',
       'Hallucination rate under 3% as measured by physician review of 500 samples',
     ],
-    github: 'https://github.com/aldrey-canlas/clinical-summarizer',
+    github: 'https://github.com/boulder-labs-ai/discharge-summary-gen',
     live: null,
   },
 
@@ -1234,7 +1234,7 @@ const PROJECT_DATA = {
       '3D volumetric output compatible with ITK-SNAP and 3D Slicer for surgical planning',
       'Uncertainty maps generated via Monte Carlo dropout for radiologist confidence scoring',
     ],
-    github: 'https://github.com/aldrey-canlas/brain-tumor-seg',
+    github: 'https://github.com/neuroai-systems/brain-tumor-segmentation',
     live: null,
   },
 
@@ -1249,7 +1249,7 @@ const PROJECT_DATA = {
       'Handles non-IID data distributions across sites with FedProx regularization',
       'Communication-efficient: converges in 30 rounds vs. 200+ for naive FedAvg',
     ],
-    github: 'https://github.com/aldrey-canlas/federated-ehr',
+    github: 'https://github.com/privacymed-research/federated-ehr-mortality',
     live: null,
   },
 
@@ -1264,7 +1264,7 @@ const PROJECT_DATA = {
       'Handles noisy and artifact-corrupted signals with robust preprocessing pipeline',
       'Outperforms single-modality CNN and LSTM baselines by 3.1% macro F1',
     ],
-    github: 'https://github.com/aldrey-canlas/ecg-arrhythmia',
+    github: 'https://github.com/cardioai-institute/ecg-arrhythmia-classifier',
     live: null,
   },
 };
@@ -1300,10 +1300,11 @@ function initProjectModal() {
 
       const actionsHtml = [
         data.github
-          ? `<a href="${data.github}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-               View on GitHub
-             </a>`
+          ? `<span class="modal-private-repo" aria-label="Private repository" aria-disabled="true">
+               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+               <span class="modal-private-repo-label">Private Repo</span>
+               <span class="modal-private-repo-url">${data.github.replace('https://', '')}</span>
+             </span>`
           : '',
         data.live
           ? `<a href="${data.live}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
