@@ -1825,6 +1825,12 @@ main {
   margin-bottom: var(--space-4);
 }
 
+.credmark-badges-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
 .credmark-badge {
   display: inline-flex;
   align-items: center;
@@ -1846,6 +1852,27 @@ main {
   box-shadow: var(--shadow-glow);
   transform: translateY(-0.125rem);
   text-decoration: none;
+}
+
+/* TensorFlow variant — orange accent on hover */
+.credmark-badge--tf:hover,
+.credmark-badge--tf:focus-visible {
+  border-color: #ff6f00;
+  box-shadow: 0 0 1.25rem rgba(255, 111, 0, 0.2);
+}
+
+/* PyTorch variant — red accent on hover */
+.credmark-badge--pt:hover,
+.credmark-badge--pt:focus-visible {
+  border-color: #ee4c2c;
+  box-shadow: 0 0 1.25rem rgba(238, 76, 44, 0.2);
+}
+
+/* HuggingFace variant — yellow accent on hover */
+.credmark-badge--hf:hover,
+.credmark-badge--hf:focus-visible {
+  border-color: #FFD21E;
+  box-shadow: 0 0 1.25rem rgba(255, 210, 30, 0.2);
 }
 
 .credmark-badge-visual {

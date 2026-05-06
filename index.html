@@ -598,35 +598,116 @@
               </li>
             </ul>
 
-            <!-- Credmark Skill Badge — fully inline, no external images -->
+            <!-- Credmark Skill Badges — fully inline, no external images -->
             <div class="credmark-badge-wrapper" data-reveal="up">
-              <h3>Skill Badge</h3>
-              <a
-                href="https://credmark.ai/badge/CM-2605-JF7N7UT"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="credmark-badge"
-                aria-label="Credmark Top 30% Python badge — verify credential"
-              >
-                <div class="credmark-badge-visual" aria-hidden="true">
-                  <!-- Hexagon badge shape, inline SVG -->
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="url(#cmGrad)" stroke="rgba(0,200,255,0.4)" stroke-width="1"/>
-                    <defs>
-                      <linearGradient id="cmGrad" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#0a1628"/>
-                        <stop offset="100%" stop-color="#0d2040"/>
-                      </linearGradient>
-                    </defs>
-                    <!-- Python logo mark — simplified -->
-                    <text x="24" y="30" text-anchor="middle" font-size="18" font-family="monospace" font-weight="700" fill="#00c8ff">Py</text>
-                  </svg>
-                </div>
-                <div class="credmark-badge-info">
-                  <span class="credmark-badge-title">Top 30% Python</span>
-                  <span class="credmark-badge-issuer">Credmark · CM-2605-JF7N7UT</span>
-                </div>
-              </a>
+              <h3>Skill Badges</h3>
+              <div class="credmark-badges-row">
+
+                <!-- Python badge -->
+                <a
+                  href="https://credmark.ai/badge/CM-2605-JF7N7UT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="credmark-badge"
+                  aria-label="Credmark Top 30% Python badge — verify credential"
+                >
+                  <div class="credmark-badge-visual" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="url(#cmGradPy)" stroke="rgba(0,200,255,0.4)" stroke-width="1"/>
+                      <defs>
+                        <linearGradient id="cmGradPy" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#0a1628"/>
+                          <stop offset="100%" stop-color="#0d2040"/>
+                        </linearGradient>
+                      </defs>
+                      <text x="24" y="30" text-anchor="middle" font-size="18" font-family="monospace" font-weight="700" fill="#00c8ff">Py</text>
+                    </svg>
+                  </div>
+                  <div class="credmark-badge-info">
+                    <span class="credmark-badge-title">Top 30% Python</span>
+                    <span class="credmark-badge-issuer">Credmark · CM-2605-JF7N7UT</span>
+                  </div>
+                </a>
+
+                <!-- TensorFlow badge -->
+                <a
+                  href="https://credmark.ai/badge/CM-2605-UAC2LZK"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="credmark-badge credmark-badge--tf"
+                  aria-label="Credmark Top 10% TensorFlow badge — verify credential"
+                >
+                  <div class="credmark-badge-visual" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="url(#cmGradTF)" stroke="rgba(255,111,0,0.45)" stroke-width="1"/>
+                      <defs>
+                        <linearGradient id="cmGradTF" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#1a0e00"/>
+                          <stop offset="100%" stop-color="#2a1500"/>
+                        </linearGradient>
+                      </defs>
+                      <text x="24" y="30" text-anchor="middle" font-size="14" font-family="monospace" font-weight="700" fill="#ff6f00">TF</text>
+                    </svg>
+                  </div>
+                  <div class="credmark-badge-info">
+                    <span class="credmark-badge-title">Top 10% TensorFlow</span>
+                    <span class="credmark-badge-issuer">Credmark · CM-2605-UAC2LZK</span>
+                  </div>
+                </a>
+
+                <!-- PyTorch badge -->
+                <a
+                  href="https://credmark.ai/badge/CM-2605-ATDR_N8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="credmark-badge credmark-badge--pt"
+                  aria-label="Credmark Top 10% PyTorch badge — verify credential"
+                >
+                  <div class="credmark-badge-visual" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="url(#cmGradPT)" stroke="rgba(238,76,44,0.45)" stroke-width="1"/>
+                      <defs>
+                        <linearGradient id="cmGradPT" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#1a0800"/>
+                          <stop offset="100%" stop-color="#2a0e00"/>
+                        </linearGradient>
+                      </defs>
+                      <text x="24" y="30" text-anchor="middle" font-size="14" font-family="monospace" font-weight="700" fill="#ee4c2c">PT</text>
+                    </svg>
+                  </div>
+                  <div class="credmark-badge-info">
+                    <span class="credmark-badge-title">Top 10% PyTorch</span>
+                    <span class="credmark-badge-issuer">Credmark · CM-2605-ATDR_N8</span>
+                  </div>
+                </a>
+
+                <!-- HuggingFace Integration badge -->
+                <a
+                  href="https://credmark.ai/badge/CM-2605-J4ZVD2-"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="credmark-badge credmark-badge--hf"
+                  aria-label="Credmark Top 10% HuggingFace Integration badge — verify credential"
+                >
+                  <div class="credmark-badge-visual" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="url(#cmGradHF)" stroke="rgba(255,210,30,0.45)" stroke-width="1"/>
+                      <defs>
+                        <linearGradient id="cmGradHF" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#1a1600"/>
+                          <stop offset="100%" stop-color="#2a2200"/>
+                        </linearGradient>
+                      </defs>
+                      <text x="24" y="30" text-anchor="middle" font-size="13" font-family="monospace" font-weight="700" fill="#FFD21E">HF</text>
+                    </svg>
+                  </div>
+                  <div class="credmark-badge-info">
+                    <span class="credmark-badge-title">Top 10% HuggingFace</span>
+                    <span class="credmark-badge-issuer">Credmark · CM-2605-J4ZVD2-</span>
+                  </div>
+                </a>
+
+              </div>
             </div>
           </div>
 
