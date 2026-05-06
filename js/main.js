@@ -1219,7 +1219,7 @@ const PROJECT_DATA = {
       'LoRA fine-tuning on a single A100 GPU in under 8 hours',
       'Hallucination rate under 3% as measured by physician review of 500 samples',
     ],
-    github: 'https://github.com/boulder-labs-ai/discharge-summary-gen',
+    github: 'https://github.com/clinicaldoc-ai/discharge-summary-gen',
     live: null,
   },
 
