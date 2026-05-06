@@ -1849,25 +1849,12 @@ main {
 }
 
 .credmark-badge-visual {
-  position: relative;
-  width: 3rem;
-  height: 3rem;
   flex-shrink: 0;
-}
-
-.credmark-badge-bg {
   width: 3rem;
   height: 3rem;
-  display: block;
-}
-
-.credmark-badge-logo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .credmark-badge-info {

@@ -598,7 +598,7 @@
               </li>
             </ul>
 
-            <!-- Credmark Skill Badge -->
+            <!-- Credmark Skill Badge — fully inline, no external images -->
             <div class="credmark-badge-wrapper" data-reveal="up">
               <h3>Skill Badge</h3>
               <a
@@ -608,18 +608,19 @@
                 class="credmark-badge"
                 aria-label="Credmark Top 30% Python badge — verify credential"
               >
-                <div class="credmark-badge-visual">
-                  <img
-                    src="https://credmark.ai/images/badges/badge_bg_2.svg"
-                    alt=""
-                    aria-hidden="true"
-                    class="credmark-badge-bg"
-                  />
-                  <img
-                    src="https://credmark.ai/images/logos/credmark-logo.svg"
-                    alt="Credmark"
-                    class="credmark-badge-logo"
-                  />
+                <div class="credmark-badge-visual" aria-hidden="true">
+                  <!-- Hexagon badge shape, inline SVG -->
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="url(#cmGrad)" stroke="rgba(0,200,255,0.4)" stroke-width="1"/>
+                    <defs>
+                      <linearGradient id="cmGrad" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#0a1628"/>
+                        <stop offset="100%" stop-color="#0d2040"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Python logo mark — simplified -->
+                    <text x="24" y="30" text-anchor="middle" font-size="18" font-family="monospace" font-weight="700" fill="#00c8ff">Py</text>
+                  </svg>
                 </div>
                 <div class="credmark-badge-info">
                   <span class="credmark-badge-title">Top 30% Python</span>
